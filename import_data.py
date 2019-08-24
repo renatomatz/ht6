@@ -182,18 +182,10 @@ class Equity(Interface):
         return data.set_index(date_col)
 
     @Interface._ensure_api_enabled
-    def get_daily_metrics(self):
+    def get_daily_prices(self):
 
         evebitda = self.get_dataset("DAILY", 
                                     columns=["ticker", "date", "evebitda"])
-
-        prices = self.get_dataset("SEP",
-                                  columns=["ticker", "date", "close"])
-        
-        data = pd.merge(left=evebitda,
-                        right=prices,
-                        on=["ticker", "date"],
-                        how="inner")
 
         data = self._ts_index(data, date_col="date")
 

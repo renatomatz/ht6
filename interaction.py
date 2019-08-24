@@ -23,7 +23,7 @@ class Interaction:
     def terminate(self, time):
         self.end = time
 
-    def inter_days(self):
+    def days(self):
         if self.end:
             end = self.end
         else:
@@ -53,3 +53,18 @@ class Interaction:
         total = self.transactions.iloc[0].sum()
 
         return total / self.client.income if rel_to_income else total
+
+    def score(self, glob_avg=None):
+        
+        durations = [inter.days for inter in self.client.interaction_history]
+
+        rel_t = self.days / sum(durations)
+
+        if not self.end:
+            rel_t = glob_avg ** (rel_t / glob_avg)
+            rel_a = sum(self.transactions()[:-1] / self.client.income)
+
+        else:
+            rel_a = sum(self.transactions() / self.client.income)
+
+        return rel_t * rel_a
