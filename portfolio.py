@@ -34,7 +34,7 @@ class Portfolio:
         if isinstance(time, str):
             time = pd.Timestamp(time)
 
-        history.append(pd.DataFrame({"ammount":[ammount]}, index=[time])
+        history.append(pd.DataFrame({"ammount":[ammount]}, index=[time]))
 
     def set_returns(self):
         rets = []

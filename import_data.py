@@ -46,15 +46,17 @@ class Interface:
 class Equity(Interface):
 
     ticker: str
+    inv_type: str
     market: str
     industry: str
     start: datetime
     end: datetime
 
-    def __init__(self, name, market=None, industry=None, start=None, end=None,
-                 mem_file=None, key=None):
+    def __init__(self, name, inv_type="Equity", market=None, industry=None, 
+                 start=None, end=None, mem_file=None, key=None):
 
         self.ticker = name
+        self.inv_type = inv_type
         self.market = market
         self.industry = industry
         self.start = start
@@ -231,7 +233,9 @@ class Equity(Interface):
 
 class Custom(Interface):
 
-    def __init__(self, mem_file=None, key=None):
+    def __init__(self, inv_type=None, mem_file=None, key=None):
+
+        self.inv_type = inv_type
 
         if not mem_file:
             mem_file = "data"
