@@ -60,7 +60,7 @@ class Portfolio:
                                                           else self.returns
         sd_rets = sd_rets.resample("Y").std()
 
-       return sd_rets.iloc[0, 0] if latest_annualized else np.mean(sd_rets)
+        return sd_rets.iloc[0, 0] if latest_annualized else np.mean(sd_rets)
 
  
 def _filter_dates(data, start, end):
