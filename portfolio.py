@@ -19,7 +19,7 @@ class Portfolio:
     
     assets: Dict[int, Interface]
     history: pd.DataFrame
-    returns: pf.DataFrame
+    returns: pd.DataFrame
     
     def __init__(self, assets, history):
 
