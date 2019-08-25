@@ -1,0 +1,9 @@
+import json
+import os
+from collections import namedtuple
+
+for filename in os.listdir(os.getcwd()):   #file directory? How to distinguish client and consultant
+    for dic in filename:
+        x = json.loads(dic, object_hook=lambda d: namedtuple('X', d.keys())(
+            *d.values()))
+#x should be the json file name
