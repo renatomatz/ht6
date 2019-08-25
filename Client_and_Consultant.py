@@ -24,25 +24,21 @@ class Client(person):
     credit_rating: float
     intended_investment: float
     language: str
-    transaction_history: list
     children: int
     education: str
-    interaction_history: list
 
     def __init__(self, name: str, age: int, income: int, sex: str,\
                  expenses: str, date_of_join: str, credit_rating: float,\
-                 intended_investment: float, language: str, transaction_history: list,\
-                 children: int, education: str, interaction_history: list):
+                 intended_investment: float, language: str, \
+                 children: int, education: str, ):
         super(person, self).__init__(name, age, date_of_join, language)
         self.income = income
         self.sex = sex
         self.expenses = expenses
         self.credit_rating = credit_rating
         self.intended_investment = intended_investment
-        self.transaction_history = transaction_history
         self.children = children
         self.education = education
-        self.interaction_history = interaction_history
 
 
 class Consultant(person):
