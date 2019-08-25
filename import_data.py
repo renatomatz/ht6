@@ -37,11 +37,12 @@ class Interface:
             
             if quandl.ApiConfig.api_key is None:
 
-                args[0].enable() # args[0] == self
+                args[0].enable()  # args[0] == self
 
             return f(*args, **kwargs)
 
         return check
+
 
 class Equity(Interface):
 
@@ -108,8 +109,8 @@ class Equity(Interface):
             # Imported index is normally labeled as "None" and saved as column
 
             for col in [c for c in data.columns if "date" in c]:
-            # Dates are not automatically converted to <pd.Timestamp> objects
-            # assumes <pd.Timestamp> columns have "date" in their names
+                # Dates are not automatically converted to <pd.Timestamp> objects
+                # assumes <pd.Timestamp> columns have "date" in their names
                 data[col] = data[col].map(lambda x: pd.Timestamp(x))
 
         else:
@@ -186,12 +187,15 @@ class Equity(Interface):
     @Interface._ensure_api_enabled
     def get_daily_prices(self):
 
-        evebitda = self.get_dataset("DAILY", 
-                                    columns=["ticker", "date", "evebitda"])
+        data = self.get_dataset("SEP", 
+                                  columns=["ticker", "date", "close"])
 
         data = self._ts_index(data, date_col="date")
 
         data = self._filter_dates(data)
+
+        data["price"] = data["close"]
+        del data["close"]
 
         return data
 
@@ -242,7 +246,7 @@ class Custom(Interface):
 
         super().__init__(mem_file, key)
 
-    def get_yahoo_market_index(self, name, columns=None):
+    def get_dataset(self, name, source="yahoo", columns=None):
         """Get market data from Yahoo! finance using a <pandas.data_reader>
 
         name: market index name as available in Yahoo! finance
@@ -262,7 +266,7 @@ class Custom(Interface):
 
         else:
             
-            data = web.DataReader(name, "yahoo")
+            data = web.DataReader(name,source)
 
             if not os.path.exists(self._mem_file):
                 os.mkdir(self._mem_file)

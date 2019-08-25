@@ -34,7 +34,8 @@ class Interaction:
 
     def interaction_returns(self):
         return self.client.portfolio.get_returns(annualized_latest=False, \
-                                                 self.start, self.end)
+                                                 start=self.start, 
+                                                 end=self.end)
 
     def transactions(self):
 
@@ -47,7 +48,7 @@ class Interaction:
         return t
 
     def n_transactions(self):
-        return len(self.transactions)
+        return len(self.transactions())
 
     def ammount_invested(self, rel_to_income=True):
         total = self.transactions.iloc[0].sum()

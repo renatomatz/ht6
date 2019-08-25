@@ -4,18 +4,20 @@ modeling
 """
 
 import pandas as pd
+import numpy as np
 from sklearn.cluster import KMeans
 from datetime import date
 
-def client_processing(clis):
-    clients = pd.DataFrame({"age":[],
-                            "income":[],
-                            "male":[],
-                            "inv_expenses":[],
-                            "days_active":[],
-                            "credit_rating":[],
-                            "children":[],
-                            "education":[]})
+def client_processing(clis): 
+    clients = pd.DataFrame({"age": [],
+                            "income": [],
+                            "male": [],
+                            "inv_expenses": [],
+                            "days_active": [],
+                            "credit_rating": [],
+                            "children": [],
+                            "education": [],
+                            "portfolio": []})
 
     for client in clis:
         df = pd.DataFrame()
@@ -29,19 +31,20 @@ def client_processing(clis):
         df["credit_rating"] = client.credit_rating
         df["children"] = client.children
         df["education"] = client.education
+        df["portfolio"] = client.portfolio
 
         clients.append(df)
 
     return clients
 
 def consultant_processing(cons):
-    consultants = pd.DataFrame({"age":[],
-                                "experience":[],
-                                "days_active":[],
-                                "n_clients":[],
-                                "portfolio":[]})
+    consultants = pd.DataFrame({"age": [],
+                                "experience": [],
+                                "days_active": [],
+                                "n_clients": [],
+                                "portfolio": []})
 
-    for conultant in cons:
+    for consultant in cons:
         df = pd.DataFrame()
         df["age"] = consultant.age
         df["experience"] = consultant.experience
@@ -55,12 +58,12 @@ def consultant_processing(cons):
     return consultants
 
 def portfolio_processing(ports):
-    portfolios = pd.DataFrame({"volatility":[], 
-                               "returns":[],
-                               "n_transactions":[],
-                               "eq_ratio":[],
-                               "bond_ratio":[],
-                               "com_ratio":[]})
+    portfolios = pd.DataFrame({"volatility": [], 
+                               "returns": [],
+                               "n_transactions": [],
+                               "eq_ratio": [],
+                               "bond_ratio": [],
+                               "com_ratio": []})
     for port in ports:
         df = pd.DataFrame()
         df["volatility"] = port.get_volatility()
@@ -74,11 +77,11 @@ def portfolio_processing(ports):
 
         df["eq_ratio"] = a_dict["equity"] / len(port.assets)
         df["bond_ratio"] = a_dict["bond"] / len(port.assets)
-        df["com_ratio"] = a_dict["commodity"] /len(port.assets)
+        df["com_ratio"] = a_dict["commodity"] / len(port.assets)
 
         portfolios.append(df)
 
-    return portfolio
+    return portfolios
 
 def interaction_processing(inters, glob_avg):
     interactions = pd.DataFrame({"client":[],
@@ -105,7 +108,7 @@ def interaction_processing(inters, glob_avg):
         elif isinstance(glob_avg, pd.DataFrame):
             glob_avg = np.mean(glob_avg["returns"])
 
-        df["score"] = interaction.score(glob_avg)
+        df["score"] = interaction.score(glob_avg=glob_avg)
 
         interactions.append(df)
 

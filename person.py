@@ -1,6 +1,7 @@
 #creating abstract class "Person"
 from portfolio import Portfolio
 
+
 class person:
     name: str
     age: int
@@ -8,7 +9,7 @@ class person:
     language: str
     portfolio: Portfolio
 
-    def __init__(self, name:str, age: int, date_of_join: str, language:str, \
+    def __init__(self, name: str, age: int, date_of_join: str, language:str, \
                  portfolio=None):
         # public attributes
         self.name = name
@@ -32,7 +33,7 @@ class Client(person):
     transaction_history: list
     children: int
     education: int
-    interaction_history: list
+    interaction_history: List[]
 
     def __init__(self, name: str, age: int, income: int, male:bool,
                  expenses: str, date_of_join: str, credit_rating: float,
@@ -49,7 +50,8 @@ class Client(person):
         3 - graduate
         """
 
-        super(person, self).__init__(name, age, date_of_join, language)
+        super(person, self).__init__(name, age, date_of_join, language, 
+                                     portfolio)
         self.income = income
         self.male = male
         self.expenses = expenses
@@ -59,7 +61,6 @@ class Client(person):
         self.children = children
         self.education = education
         self.interaction_history = interaction_history
-        self.portfolio = portfolio
 
 
 class Consultant(person):
@@ -77,7 +78,8 @@ class Consultant(person):
     def __init__(self, name: str, age: int, experience: int, date_of_join: str,\
                  language: str, client_history: list, portfolio=None):
 
-        super(person, self).__init__(name, age, date_of_join, language)
+        super(person, self).__init__(name, age, date_of_join, language, 
+                                     portfolio)
         self.experience = experience
         self.client_history = client_history
         self.portfolio = portfolio

@@ -1,4 +1,4 @@
-from typing import List, Dict, Union
+from typing import List, Dict
 
 import pandas as pd
 import numpy as np
@@ -19,7 +19,7 @@ class Portfolio:
     
     assets: Dict[int, Interface]
     history: pd.DataFrame
-    returns: pf.DataFrame
+    returns: pd.DataFrame
     
     def __init__(self, assets, history):
 
@@ -60,7 +60,7 @@ class Portfolio:
                                                           else self.returns
         sd_rets = sd_rets.resample("Y").std()
 
-       return sd_rets.iloc[0, 0] if latest_annualized else np.mean(sd_rets)
+        return sd_rets.iloc[0, 0] if latest_annualized else np.mean(sd_rets)
 
  
 def _filter_dates(data, start, end):

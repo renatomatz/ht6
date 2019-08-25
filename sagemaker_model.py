@@ -1,18 +1,21 @@
+from processing import *
+from import_data import *
+
 import boto3
 import pandas as pd
-import numpy as np
 
 from sagemaker import get_execution_role
 from sagemaker.session import Session
 
-role = get_execution_role()
+from sagemaker import KMeans
+from sagemaker.sklearn import SKLearn
 
-from processing import *
-from import_data import *
+role = get_execution_role()
 
 bucket = "ressonance"
 key = "data/training_data"
 region = boto3.Session().region_name
+
 
 def upload_file(f):
     boto3.Session() \
@@ -21,14 +24,13 @@ def upload_file(f):
          .Object(key) \
          .upload_file(f)
 
+
 ## Step 1: portfolio
 
 ports = None
 ports_df = portfolio_processing(ports)
 ports_df.to_csv(key+"portfolios.csv")
 upload_file(key+"portfolios.csv")
-
-from sagemaker import KMeans
 
 s3_client = boto3.client("s3")
 
@@ -53,8 +55,10 @@ port_predictor = port_kmeans.deploy(initial_instance_count=1,
 ## Step 2: people 
 # Substiuting portfolios
 
+
 def sub_port(port):
     return port_predictor(portfolio_processing(list(port)))
+
 
 clis = None
 clis_df = client_processing(clis)
@@ -111,13 +115,19 @@ inters_df.to_csv(key+"interactions.csv")
 
 upload_file(key+"interactions.csv")
 
-inter_kmeans = KMeans(role=role,
-                      train_instance_count=2,
-                      train_instance_type="ml.c4.xlarge",
-                      output_path=output_path+"interaction",
-                      k=5,
-                      data_location=data_path+"interactions.csv")
+models = {}
 
-inter_kmeans.fit(inter_kmeans.record_set(inter_df))
-inter_predictor = inter_kmeans.deploy(initial_instance_count=1,
+for name, df in inters_df.groupby("consultant"):
+    
+    model = SKLearn(entry_point="training_scripts.py",
+                    train_instance_type="ml.c4.xlarge",
+                    role=role,
+                    sagemaker_session=sagemaker_session,
+                    hyperparameters={"normalize": True})
+
+    model_fit = model.fit({"train": df})
+    models[name] = model_fit.deploy(initial_instance_count=1,
                                     instance_type="ml.m4.xlarge")
+
+
+

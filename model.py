@@ -37,7 +37,7 @@ def match_processing(port_model, cons_model, interactions):
                                                     consultant_processing( \
                                                         interactions["consultant"]))["class"]
 
-    #not good
+    # not good, add portfolio
     interactions.concat(classify_portfolios(port_model, 
                                             portfolio_processing( \
                                                 [i.client.portfolio for i in interactions])))
