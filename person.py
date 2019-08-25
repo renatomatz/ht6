@@ -29,15 +29,13 @@ class Client(person):
     credit_rating: float
     intended_investment: float
     language: str
-    transaction_history: list
     children: int
     education: int
-    interaction_history: list
 
     def __init__(self, name: str, age: int, income: int, male:bool,
                  expenses: str, date_of_join: str, credit_rating: float,
-                 intended_investment: float, language: str, transaction_history: list,
-                 children: int, education: int, interaction_history: list, 
+                 intended_investment: float, language: str, 
+                 children: int, education: int, 
                  portfolio=None):
 
         """Initialize client
@@ -55,10 +53,8 @@ class Client(person):
         self.expenses = expenses
         self.credit_rating = credit_rating
         self.intended_investment = intended_investment
-        self.transaction_history = transaction_history
         self.children = children
         self.education = education
-        self.interaction_history = interaction_history
         self.portfolio = portfolio
 
 
