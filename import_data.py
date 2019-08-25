@@ -188,7 +188,7 @@ class Equity(Interface):
     def get_daily_prices(self):
 
         data = self.get_dataset("SEP", 
-                                  columns=["ticker", "date", "close"])
+                                 columns=["ticker", "date", "close"])
 
         data = self._ts_index(data, date_col="date")
 
@@ -246,7 +246,7 @@ class Custom(Interface):
 
         super().__init__(mem_file, key)
 
-    def get_dataset(self, name, source="yahoo", columns=None):
+    def get_dataset(self, name, source="yahoo", columns=None, date_col="Date"):
         """Get market data from Yahoo! finance using a <pandas.data_reader>
 
         name: market index name as available in Yahoo! finance
@@ -260,9 +260,9 @@ class Custom(Interface):
 
             data = pd.read_csv(path)
 
-            data["Date"] = data["Date"].map(lambda x: pd.Timestamp(x))
+            data[date_col] = data[date_col].map(lambda x: pd.Timestamp(x))
 
-            data = data.set_index("Date")
+            data = data.set_index(date_col)
 
         else:
             
